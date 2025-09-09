@@ -1,10 +1,10 @@
 # RascalRunner ㊙️
 
-RascalRunner is a command-line red teaming tool designed to deploy malicious workflows to a Github repository covertly. The tool requires a GitHub personal access token (PAT) with `repo` and `workflow` permissions to function properly. 
+RascalRunner is a command-line red teaming tool designed to deploy malicious workflows to a Github repository covertly. The tool requires a GitHub personal access token (PAT) with `repo` and `workflow` permissions to function properly.
 
 **If you've found a PAT during a red team engagement, RascalRunner has a "recon" mode that will tell you what is possible with the token (see below)**
 
-It creates a temporary branch, uploads your workflow file, gets it executed, captures the logs, and then automatically cleans up all artifacts - including the temporary branch, workflow runs, and any deployments. This makes it ideal for testing runner-based attacks, secrets leaking, or OIDC abuse without alerting blue team to your actions. 
+It creates a temporary branch, uploads your workflow file, gets it executed, captures the logs, and then automatically cleans up all artifacts - including the temporary branch, workflow runs, and any deployments. This makes it ideal for testing runner-based attacks, secrets leaking, or OIDC abuse without alerting blue team to your actions.
 
 Check out the sister repository, [RascalRunner-Workflows](https://github.com/nopcorn/RascalRunner-Workflows), for some example workflows. Please keep in mind that RascalRunner is an advanced tool and you can easily mess up deployment and get caught if you don't know what you're doing.
 
@@ -82,9 +82,24 @@ $ rascalrunner run -a GITHUB_PAT -t nopcorn/githubaudit-vulnerablerepo -w ./dump
 
 $ cat nopcorn-dump-secrets-1730907178.txt 
 <run output>
+</run>
 ```
 
 Remember that failed runs will automatically send an email to Github repository admins. I recommend adding `continue-on-error: true` to each step in your workflow.
+
+### GitLab Reconnaissance (Self-hosted or Public Instance)
+
+RascalRunner also supports GitLab instances for reconnaissance operations. Use the `glrecon` command to analyze GitLab projects and tokens:
+
+```shell
+$ rascalrunner glrecon --gitlab-url https://gitlab.example.com/api/v4 --auth GITLAB_TOKEN
+```
+
+The `--gitlab-url` parameter specifies the GitLab instance URL (use https://gitlab.com for the public GitLab instance). The `--show-all` flag displays comprehensive information including all accessible projects and detailed permissions.
+
+The output will show token information, accessible projects, and permission levels, helping identify potential targets for pipeline exploitation. The permissions output includes project access levels, group memberships, and available CI/CD variables.
+
+<img width="849" height="457" alt="image" src="https://github.com/user-attachments/assets/6935c0eb-2351-4f32-aece-9152fd998344" />
 
 ## Some improvements to come
 
