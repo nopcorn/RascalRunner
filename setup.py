@@ -18,7 +18,7 @@ setup(
         "GitPython==3.1.43",
         "PyGithub==2.4.0",
         "PyYAML==6.0.2",
-        "Requests==2.32.3",
+        "Requests==2.32.4",
         "rich==13.9.4"
     ],
     entry_points={
