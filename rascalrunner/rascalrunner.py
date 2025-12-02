@@ -71,12 +71,8 @@ class RascalRunner:
         workflow_basename = os.path.basename(self._workflow)
         shutil.copy2(self._workflow, f"{self._tmp_dir.name}/.github/workflows/{workflow_basename}")
 
-        last_author_name = self._repo.head.commit.author.conf_name
-        last_author_email = self._repo.head.commit.author.conf_email
-        actor = Actor(last_author_name, last_author_email)
-
         self._repo.git.add(f".github/workflows/{workflow_basename}")
-        self._repo.index.commit(self._commit_message, author=actor, committer=actor)
+        self._repo.git.commit("-m", self._commit_message)
 
         remote = self._repo.remote("origin")
         remote.push(refspec=f"{self._branch_name}:{self._branch_name}", set_upstream=True)
